@@ -20,11 +20,13 @@ def dataset_revisions(pkg_name, pkg_revisions):
 
     revision_order = []
     for revision in pkg_revisions:
-
-        # The revision id needs to be passed through the context rather than data_dict (base CKAN quirk)
+        # The revision id needs to be passed through the context rather than
+        # data_dict (base CKAN quirk)
         context['revision_id'] = revision['id']
 
-        revision_pkg = toolkit.get_action('package_show')(context, {'id': pkg_name})
+        revision_pkg = toolkit.get_action('package_show')(context, {
+            'id': pkg_name
+        })
         revisions_dict[revision['id']] = revision_pkg
 
         revision_order.append(revision['id'])
@@ -53,10 +55,12 @@ def dataset_revisions(pkg_name, pkg_revisions):
                 if old_dict[k] != new_dict[k]:
                     modified_fields_dict[pair[0]].append(k)
             except KeyError:
-                modified_fields_dict[pair[0]].append(k)  # also include added and deleted fields
-
+                modified_fields_dict[pair[0]].append(k)
         modified_fields_dict[pair[0]].sort()
 
         next_record[pair[0]] = pair[1]
 
-    return {'modified_fields': modified_fields_dict, 'next_record': next_record}
+    return {
+        'modified_fields': modified_fields_dict,
+        'next_record': next_record
+    }
